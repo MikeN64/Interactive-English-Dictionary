@@ -15,10 +15,12 @@ lazy-object-proxy==1.4.3
 lockfile==0.12.2
 mccabe==0.6.1
 msgpack==0.6.2
+mysql-connector-python==8.0.21
 packaging==20.3
 pep517==0.8.2
 pep8==1.7.1
 progress==1.5
+protobuf==3.12.4
 pylint==2.5.3
 pyparsing==2.4.6
 pytoml==0.1.21
