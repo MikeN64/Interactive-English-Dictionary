@@ -1,25 +1,28 @@
 import json
 from difflib import get_close_matches
-
-data = json.load(open("data.json"))
+import dictDB
 
 def translate(word):
-    if word.lower() in data:
-        return data[word.lower()]
+    results = dictDB.get_definitions(word.lower())
+    
+    if not results:
+        results = dictDB.get_definitions(word.upper())
+ 
+    if not results:
+        results = dictDB.get_definitions(word.title)
 
-    if word.upper() in data:
-        return data[word.upper()]
-
-    if word.title() in data:
-        return data[word.title()]
-        
-    close_matches = get_close_matches(word, data.keys())
-    if close_matches:
-        closest_word = close_matches[0]
-        if confirm_word(closest_word):
-            return data[closest_word]
-        
-    return "The word does not exist. Please check it."
+    if not results:
+        all_words = dictDB.get_all_words()
+        close_matches = get_close_matches(word, all_words)
+        if close_matches:
+            closest_word = close_matches[0]
+            if confirm_word(closest_word):
+                results = dictDB.get_definitions(closest_word)
+    
+    if not results:
+        results = "The word does not exist. Please check it."
+    
+    return results 
 
 def confirm_word(word):
     message = "Did you mean \"{}\" instead? Enter \"Y\" if yes, or \"N\" if no. ".format(word)
